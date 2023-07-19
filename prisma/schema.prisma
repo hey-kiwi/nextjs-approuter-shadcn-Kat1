@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+	provider = "postgresql"
+	url = env("DATABASE_URL")
+}
+
+generator client {
+	provider = "prisma-client-js"
+}
+
+model Account {
+	id String @id @default(uuid())
+	sub String @default("")
+	name String @default("")
+	email String @unique @default("")
+	phone String @default("")
+	avatar String @default("")
+	isVerified Boolean @default(false)
+	isActive Boolean @default(true)
+	createdOn DateTime @default(now())
+	updatedOn DateTime @updatedAt
+	organizations Member[]
+}
+
+model Organization {
+	id String @id @unique @default(uuid())
+	name String @default("")
+	email String @default("")
+	phone String @default("")
+	location String @default("")
+	logo String? @default("")
+	createdOn DateTime @default(now())
+	updatedOn DateTime @updatedAt
+	accounts Member[]
+	devices Device[]
+	vcloud Vcloud?
+	fusemetrix Fusemetrix?
+}
+
+model Member {
+	owner Boolean @default(false)
+	accepted Boolean @default(false)
+	account Account @relation(fields: [accountEmail], references: [email])
+	accountEmail String
+	organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+	organizationId String
+	assignedOn DateTime @default(now())
+
+	@@id([accountEmail, organizationId])
+}
+
+model Device {
+	id String @id @unique @default(uuid())
+	key String @unique
+	name String @default("")
+	location String @default("")
+	bookingIntegration Json? @default("{}")
+	paymentIntegration Json? @default("{}")
+	acceptStripe Boolean @default(false)
+	canBook Boolean @default(true)
+	canCheckin Boolean @default(false)
+	onMaintenance Boolean @default(false)
+	isActive Boolean @default(true)
+	createdOn DateTime @default(now())
+	updatedOn DateTime @updatedAt
+	organization Organization @relation(fields: [organizationId], references: [id])
+	organizationId String
+	basket Basket[]
+	logs Log[]
+	ping Ping[]
+}
+
+model Log {
+	id String @id @default(cuid())
+	status String @default("")
+	text String @default("")
+	payload Json @default("{}")
+	createdAt DateTime @default(now())
+	device Device[]
+}
+
+model Ping {
+	id String @id @default(cuid())
+	payload Json @default("{}")
+	createdAt DateTime @default(now())
+	device Device[]
+}
+
+model Basket {
+	id String @id @default(cuid())
+	bookingIntegrationId String @default("")
+	bookingIntegrationName String @default("")
+	externalReference Json @default("{}")
+	itemDetails Json @default("[]")
+	customerDetails Json @default("{}")
+	paymentDetails Json @default("{}")
+	hasRemovedItems Boolean @default(false)
+	device Device[]
+	payload Json @default("{}")
+	createdAt DateTime @default(now())
+}
+
+model Vcloud {
+	id String @id @unique @default(uuid())
+	apiKey String @default("")
+	serviceName String @default("")
+	registerId String @default(cuid())
+	merchantId String @default(cuid())
+	merchantName String @default("")
+	payload Json @default("{}")
+	organization Organization @relation(fields: [organizationId], references: [id])
+	organizationId String @unique
+}
+
+model Fusemetrix {
+	id String @id @unique @default(uuid())
+	username String
+	password String
+	payload Json?
+	createdOn DateTime @default(now())
+	organization Organization @relation(fields: [organizationId], references: [id])
+	organizationId String @unique
+}
+
