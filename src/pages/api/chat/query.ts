@@ -17,7 +17,7 @@ const query = async (req: NextApiRequest, res: NextApiResponse) => {
 	})
 
 	const newZealandLoader = new DirectoryLoader(
-		path.join(process.cwd(), '/../src/context/newzealand/'),
+		path.join(process.cwd(), '/src/context/newzealand/'),
 		{ '.txt': (path) => new TextLoader(path) }
 	)
 
@@ -26,7 +26,7 @@ const query = async (req: NextApiRequest, res: NextApiResponse) => {
 	})
 
 
-	const rules = fs.readFileSync(path.join(process.cwd(), `/../src/context/rules.txt`), 'utf-8')
+	const rules = fs.readFileSync(path.join(process.cwd(), `/src/context/rules.txt`), 'utf-8')
 	const newZealand = await newZealandLoader.load()
 	const integration = fs.readFileSync(path.join(process.cwd(), `src/context/integration/${req.body.integration}.txt`), 'utf-8')
 
