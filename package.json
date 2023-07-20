@@ -1,9 +1,9 @@
 {
-	"name": "heykiwi-portal",
+	"name": "heykiwi-chat",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev --port 3002",
 		"build": "yarn migrate:deploy && next build",
 		"start": "next start --port ${PORT-3000}",
 		"migrate:dev": "prisma migrate dev",
@@ -38,6 +38,8 @@
 		"dayjs": "^1.11.8",
 		"embla-carousel-react": "^8.0.0-rc07",
 		"eslint-config-next": "^13.4.6",
+		"hnswlib-node": "^2.0.0",
+		"langchain": "^0.0.113",
 		"moment": "^2.29.4",
 		"nanoid": "^4.0.2",
 		"next": "^13.4.4",
@@ -56,7 +58,7 @@
 		"typescript": "^4.9.5"
 	},
 	"main": "index.js",
-	"repository": "https://github.com/southernsoftwareltd/heykiwi.portal.git",
+	"repository": "https://github.com/southernsoftwareltd/heykiwi.chat.git",
 	"author": "ravi-sohal <ravi_sohal@outlook.com>",
 	"license": "MIT"
 }
