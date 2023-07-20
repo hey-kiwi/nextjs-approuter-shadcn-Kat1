@@ -38,6 +38,7 @@
 		"dayjs": "^1.11.8",
 		"embla-carousel-react": "^8.0.0-rc07",
 		"eslint-config-next": "^13.4.6",
+		"hnswlib-node": "^2.0.0",
 		"langchain": "^0.0.113",
 		"moment": "^2.29.4",
 		"nanoid": "^4.0.2",
